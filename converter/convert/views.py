@@ -1,13 +1,14 @@
 from django.shortcuts import render,redirect,HttpResponse
 from .models import VideoModel
-
+import os
+from django.conf import settings
 # Create your views here.
 # full_path="C:\\Users\\Sooraj\\OneDrive\\Apps\\mp3_conveter\\converter\\media\\video"+name
 
 
 from moviepy.editor import VideoFileClip
 def index(request):
-    output_audio_path = "C:\\Users\\Sooraj\\OneDrive\\Apps\\mp3_conveter\\converter\\media\\video\\"
+    output_audio_path = os.path.join(settings.MEDIA_ROOT,'vedio')
     mp3_ready = False
     if request.method == 'POST':
         vdio = request.FILES.get('vdio')
@@ -28,7 +29,7 @@ def index(request):
     return render(request, 'index.html', {'mp3_ready': mp3_ready})
 
 def download_mp3(request):
-    file_path = "C:\\Users\\Sooraj\\OneDrive\\Apps\\mp3_conveter\\converter\\media\\video\\output.mp3"
+    file_path = os.path.join(settings.MEDIA_ROOT, 'vediooutput.mp3')
     with open(file_path, 'rb') as f:
         response = HttpResponse(f.read(), content_type="audio/mpeg")
         response['Content-Disposition'] = 'attachment; filename=output.mp3'
